@@ -12,15 +12,6 @@ parameters:
 stages:
 - stage: ${{ parameters.environment }}
   displayName: Deploy To ${{ parameters.environment }}
-  jobs:
-  - job:
-    steps:
-    - task: DownloadBuildArtifacts@1
-      inputs:
-        buildType: 'current'
-        downloadType: 'single'
-        artifactName: 'drop'
-        downloadPath: '$(System.ArtifactsDirectory)'
   - deployment: Deploy
     displayName: Deploy
     environment: ${{ parameters.environment }}
