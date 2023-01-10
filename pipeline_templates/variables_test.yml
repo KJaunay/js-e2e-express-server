@@ -1,4 +1,4 @@
-variable: 
+variables: 
 - name: environment
   value: test
 - name: webAppName
