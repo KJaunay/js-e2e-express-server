@@ -2,6 +2,8 @@
 variables:
 - template: pipeline_templates/vars-global.yml
 
+pool: ${{ variables.vmImageName }}
+
 stages: 
 - stage: 'build'
   displayName: 'Build'
@@ -41,8 +43,6 @@ stages:
     - template: pipeline_templates/vars-test.yml
   jobs:
     - deployment: deploymentJob
-      pool: 
-        vmImage: ${{ variables.vmImageName }}
       environment: ${{ variables.environment }}
       strategy:
         runOnce:
@@ -53,6 +53,7 @@ stages:
                   environment: test
                   webAppName: ${{ variables.webAppName }}
                   appType: ${{ variables.appType }}
+                  serviceConnection: ${{ variables.serviceConnection }}
 
 - stage: deploy_dev
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
@@ -61,8 +62,6 @@ stages:
     - template: pipeline_templates/vars-dev.yml
   jobs:
     - deployment: deploymentJob
-      pool: 
-        vmImage: ${{ variables.vmImageName }}
       environment: ${{ variables.environment }}
       strategy:
         runOnce:
@@ -73,6 +72,7 @@ stages:
                   environment: dev
                   webAppName: ${{ variables.webAppName }}
                   appType: ${{ variables.appType }}
+                  serviceConnection: ${{ variables.serviceConnection }}
 
 - stage: deploy_prd
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
@@ -81,8 +81,6 @@ stages:
     - template: pipeline_templates/vars-prd.yml
   jobs:
     - deployment: deploymentJob
-      pool: 
-        vmImage: ${{ variables.vmImageName }}
       environment: ${{ variables.environment }}
       strategy:
         runOnce:
@@ -93,3 +91,4 @@ stages:
                   environment: prd
                   webAppName: ${{ variables.webAppName }}
                   appType: ${{ variables.appType }}
+                  serviceConnection: ${{ variables.serviceConnection }}

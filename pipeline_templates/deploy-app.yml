@@ -9,7 +9,7 @@ parameters:
   type: string
   default: NODE|10.10
 - name: serviceConnection
-  type: strin
+  type: string
 
 steps:
   - task: AzureWebApp@1
