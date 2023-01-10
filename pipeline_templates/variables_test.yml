@@ -1,0 +1,9 @@
+variable: 
+- name: environment
+  value: test
+- name: webAppName
+  value: kjtech
+- name: appType
+  value: webAppLinux
+- name: resourceGroupName
+  value: it-test-use1-jsapp
