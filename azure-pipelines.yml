@@ -67,11 +67,16 @@ stages:
               runtimeStack: 'NODE|10.10'
               startUpCommand: 'npm run start'
               appSettings: '-WEBSITES_PORT 3000'
+              
   - job: 
+    dependsOn: Deploy
+    displayName: 'Run Smoke Tests on Test'
+    condition: succeeded()
     steps:
     - pwsh: |
         try {
-          Invoke-WebRequest "https://kjtech.azurewebsites.net" -Method GET -UseBasicParsing
+          $res=Invoke-WebRequest "https://kjtech.azurewebsites.net" -Method GET -UseBasicParsing
+          $res.StatusCode 
         } catch {
           "failed"
           exit 1        
