@@ -71,7 +71,7 @@ stages:
     steps:
     - pwsh: |
         try {
-          Invoke-WebRequest "https://kjtech.azurewebsites.net" -Method $method -UseBasicParsing
+          Invoke-WebRequest "https://kjtech.azurewebsites.net" -Method GET -UseBasicParsing
         } catch {
           "failed"
           exit 1        
