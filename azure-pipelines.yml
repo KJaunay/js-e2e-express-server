@@ -3,17 +3,11 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
+trigger:
+  - main
 
-#variables:
-#- template: pipeline_templates/variables_${{ parameters.environment }}.yml
-
-#parameters:
-#- name: environment
-#  type: string
-#  default: test
-
-pool:
-  vmImage: 'ubuntu-latest'
+variables:
+- template: pipeline_templates/vars-global.yml
 
 stages: 
 - stage: 'build'
@@ -21,13 +15,6 @@ stages:
   jobs: 
   - job: 'build'
     steps:
-#    - task: Bash@3
-#      inputs:
-#        targetType: 'inline'
-#        script: |
-#          # Write your commands here
-#          
-#          echo ${{ variables.webAppName }}
     - task: NodeTool@0
       inputs:
         versionSpec: '16.x'
@@ -56,6 +43,20 @@ stages:
 
     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip  
 
-- template: pipeline_templates/deploy-app.yml
-  parameters: 
-    environment: test
+- stage: deploy_test
+  variables: 
+    - template: pipeline_templates/variables_test.yml
+  jobs:
+    - deployment: deploymentJob
+      pool: 
+        vmImage: ${{ variables.vmImageName }}
+      environment: ${{ variables.environmentName }}
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template: deploy-app.yml
+                parameters:
+                  environment: test
+                  webAppName: ${{ variables.webAppName }}
+                  appType: ${{ variables.appType }}

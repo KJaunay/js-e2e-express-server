@@ -1,33 +1,28 @@
 parameters:
 - name: environment
   type: string
-  default: test
 - name: webAppName
-  default: kjtech
+  type: string
 - name: appType
-  default: webAppLinux
-- name: resourceGroupName
-  default: it-test-use1-jsapp
+  type: string
 
-stages:
-- stage: ${{ parameters.environment }}
-  displayName: Deploy To ${{ parameters.environment }}
-  jobs:
-  - deployment: Deploy
-    displayName: Deploy
-    environment: ${{ parameters.environment }}
-    pool:
-      vmImage: 'ubuntu-latest'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureWebApp@1
-            displayName: 'Azure Web App Deploy'
-            inputs:
-              azureSubscription: 'Pay-As-You-Go (fa8e018e-3a36-4104-ade8-7d8b267fe5b3)'
-              appType: '${{ parameters.appType }}'
-              appName: '${{ parameters.webAppName }}'
-              package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-              runtimeStack: 'NODE|10.10'
-              startUpCommand: 'npm run start'
+steps:
+  - task: DownloadBuildArtifacts@0
+    inputs:
+      buildType: "current"
+      artifactName: "drop"
+      downloadPath: "$(Build.SourcesDirectory)"
+  - task: ExtractFiles@1
+    inputs:
+      archiveFilePatterns: "**/*.zip"
+      destinationFolder: $(System.ArtifactsDirectory)/drop
+      cleanDestinationFolder: true
+  - task: AzureWebApp@1
+    displayName: 'Azure Web App Deploy'
+    inputs:
+      azureSubscription: 'Pay-As-You-Go (fa8e018e-3a36-4104-ade8-7d8b267fe5b3)'
+      appType: '${{ parameters.appType }}'
+      appName: '${{ parameters.webAppName }}'
+      package: '$(System.ArtifactsDirectory)/drop/*.zip'
+      runtimeStack: 'NODE|10.10'
+      startUpCommand: 'npm run start'

@@ -1,0 +1,7 @@
+variables:
+  nodeVersion: "10"
+  vmImageName: "ubuntu-latest"
+  resourceGroup: "node-rg"
+  appType: "webAppLinux"
+  location: "east us"
+  WebApp: "td-nestedyamltemplates"
