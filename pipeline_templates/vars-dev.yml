@@ -1,0 +1,10 @@
+# File: variables/build.yml
+variables:
+- name: environment
+  value: dev
+- name: webAppName
+  value: kjtech
+- name: appType
+  value: webAppLinux
+- name: resourceGroupName
+  value: it-dev-use1-jsapp

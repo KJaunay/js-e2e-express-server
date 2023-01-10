@@ -4,4 +4,4 @@ variables:
   resourceGroup: "node-rg"
   appType: "webAppLinux"
   location: "east us"
-  WebApp: "td-nestedyamltemplates"
+  serviceConnection: 'Pay-As-You-Go (fa8e018e-3a36-4104-ade8-7d8b267fe5b3)'
