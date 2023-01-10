@@ -1,17 +1,15 @@
-variables:
-- name: environment
-  value: test
-- name: webAppName
-  value: kjtech
-- name: appType
-  value: webAppLinux
-- name: resourceGroupName
-  value: it-test-use1-jsapp
+
 
 parameters:
 - name: environment
   type: string
   default: test
+- name: webAppName
+  default: kjtech
+- name: appType
+  default: webAppLinux
+- name: resourceGroupName
+  default: it-test-use1-jsapp
 
 stages:
 - stage: ${{ parameters.environment }}
