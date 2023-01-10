@@ -38,7 +38,7 @@ stages:
 
 - stage: deploy_test
   variables: 
-    - template: pipeline_templates/variables_test.yml
+    - template: pipeline_templates/vars-test.yml
   jobs:
     - deployment: deploymentJob
       pool: 
@@ -58,7 +58,7 @@ stages:
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
   dependsOn: deploy_test
   variables: 
-    - template: pipeline_templates/variables_dev.yml
+    - template: pipeline_templates/vars-dev.yml
   jobs:
     - deployment: deploymentJob
       pool: 
@@ -78,7 +78,7 @@ stages:
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
   dependsOn: deploy_test
   variables: 
-    - template: pipeline_templates/variables_prd.yml
+    - template: pipeline_templates/vars-prd.yml
   jobs:
     - deployment: deploymentJob
       pool: 
