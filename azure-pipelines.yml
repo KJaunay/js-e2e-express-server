@@ -66,3 +66,4 @@ stages:
               package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
               runtimeStack: 'NODE|10.10'
               startUpCommand: 'npm run start'
+              appSettings: '-WEBSITES_PORT 3000'
