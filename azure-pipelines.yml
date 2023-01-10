@@ -2,7 +2,7 @@
 variables:
 - template: pipeline_templates/vars-global.yml
 
-pool: ${{ variables.vmImageName }}
+pool: 'ubuntu-latest'
 
 stages: 
 - stage: 'build'
