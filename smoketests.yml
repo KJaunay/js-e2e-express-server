@@ -25,17 +25,6 @@ steps:
 
 - pwsh: |
     try {
-        $res=Invoke-WebRequest -Uri 'https://kjtech.azusfsdrewebsites.net/'
-        $res.StatusCode | Should -Be '200'
-        $res
-    }
-    catch {
-        Write-Error $_.Exception.Message
-        Exit 1
-    }
-
-- pwsh: |
-    try {
         $res=Invoke-WebRequest -Uri 'https://kjtech.azurewebsites.net/'
         $res.StatusCode | Should -Be '200'
         $res
