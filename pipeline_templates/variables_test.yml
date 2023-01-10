@@ -1,4 +1,5 @@
-variables: 
+# File: variables/build.yml
+variables:
 - name: environment
   value: test
 - name: webAppName
