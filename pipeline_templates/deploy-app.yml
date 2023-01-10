@@ -17,11 +17,7 @@ stages:
     steps:
     - task: DownloadBuildArtifacts@1
       inputs:
-        buildType: 'specific'
-        project: '6d369b2f-a4bb-405e-8364-c913f58a0707'
-        pipeline: '4'
-        specificBuildWithTriggering: true
-        buildVersionToDownload: 'latest'
+        buildType: 'current'
         downloadType: 'single'
         artifactName: '39.zip'
         downloadPath: '$(System.ArtifactsDirectory)'
