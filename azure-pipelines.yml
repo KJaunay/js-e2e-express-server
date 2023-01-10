@@ -55,7 +55,7 @@ stages:
         runOnce:
           deploy:
             steps:
-              - template: deploy-app.yml
+              - template: pipeline_templates/deploy-app.yml
                 parameters:
                   environment: test
                   webAppName: ${{ variables.webAppName }}
