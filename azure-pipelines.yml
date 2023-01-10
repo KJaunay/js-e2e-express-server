@@ -49,7 +49,7 @@ stages:
   condition: succeeded()
   jobs:
   - deployment: Deploy
-    displayName: Deploy
+    displayName: Deploy to Test
     environment: test
     pool:
       vmImage: 'ubuntu-latest'
@@ -67,3 +67,12 @@ stages:
               runtimeStack: 'NODE|10.10'
               startUpCommand: 'npm run start'
               appSettings: '-WEBSITES_PORT 3000'
+  - job: 
+    steps:
+    - pwsh: |
+        try {
+          Invoke-WebRequest "https://kjtech.azurewebsites.net" -Method $method -UseBasicParsing
+        } catch {
+          "failed"
+          exit 1        
+        }
