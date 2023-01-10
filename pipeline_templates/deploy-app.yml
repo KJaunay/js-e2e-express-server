@@ -19,7 +19,7 @@ stages:
       inputs:
         buildType: 'current'
         downloadType: 'single'
-        artifactName: '39.zip'
+        artifactName: 'drop'
         downloadPath: '$(System.ArtifactsDirectory)'
   - deployment: Deploy
     displayName: Deploy
@@ -36,6 +36,6 @@ stages:
               azureSubscription: 'Pay-As-You-Go (fa8e018e-3a36-4104-ade8-7d8b267fe5b3)'
               appType: '${{ parameters.appType }}'
               appName: '${{ parameters.webAppName }}'
-              package: '$(System.ArtifactsDirectory)/39.zip'
+              package: '$(System.ArtifactsDirectory)/drop/.zip'
               runtimeStack: 'NODE|10.10'
               startUpCommand: 'npm run start'
