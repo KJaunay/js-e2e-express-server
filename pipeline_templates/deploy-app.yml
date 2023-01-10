@@ -9,14 +9,6 @@ parameters:
 - name: resourceGroupName
   default: it-test-use1-jsapp
 
-variables:
-- name: vmImage
-  value: vs2017-win2016
-- name: arch
-  value: x64
-- name: config
-  value: debug
-
 stages:
 - stage: ${{ parameters.environment }}
   displayName: Deploy To ${{ parameters.environment }}
