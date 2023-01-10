@@ -3,6 +3,14 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
+parameters:
+- name: environment
+  type: string
+  default: test
+
+variables:
+- template: pipeline_templates/variables_${{ parameters.environment }}.yml
+
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -40,6 +48,6 @@ stages:
 
     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip  
 
-- template: pipeline_templates/deploy-app.yml
-  parameters: 
-    environment: test
+#- template: pipeline_templates/deploy-app.yml
+#  parameters: 
+#    environment: test
