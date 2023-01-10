@@ -21,3 +21,13 @@ steps:
       package: '$(Agent.BuildDirectory)/drop/$(build.buildid).zip'
       runtimeStack: '${{ parameters.runtimeStack }}'
       startUpCommand: 'npm run start'
+  - pwsh: |
+      try {
+          $res=Invoke-WebRequest -Uri 'https://${{ parameters.webAppName }}.azurewebsites.net/'
+          $res.StatusCode | Should -Be '200'
+          $res
+      }
+      catch {
+          Write-Error $_.Exception.Message
+          Exit 1
+      }
