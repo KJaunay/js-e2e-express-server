@@ -11,6 +11,7 @@ pool:
 
 stages: 
 - stage: 'build'
+  displayName: 'Build'
   jobs: 
   - job: 'build'
     steps:
@@ -31,22 +32,38 @@ stages:
         npm test
       displayName: 'npm test'
 
-    - task: CopyFiles@2
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
       inputs:
-        sourceFolder: '$(Build.SourcesDirectory)'
-        contents: '*.tgz' 
-        targetFolder: $(Build.ArtifactStagingDirectory)/npm
-      displayName: 'Copy npm package'
+        rootFolderOrFile: '$(Build.SourcesDirectory)'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        replaceExistingArchive: true
 
-    - task: CopyFiles@2
-      inputs:
-        sourceFolder: '$(Build.SourcesDirectory)'
-        contents: 'package.json' 
-        targetFolder: $(Build.ArtifactStagingDirectory)/npm
-      displayName: 'Copy package.json'   
+    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip  
 
-    - task: PublishPipelineArtifact@1
-      inputs:
-        targetPath: '$(Build.ArtifactStagingDirectory)/npm'
-        artifactName: npm
-      displayName: 'Publish npm artifact'
+- stage: test
+  displayName: Deploy To Test
+  dependsOn: build
+  condition: succeeded()
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    environment: test
+    pool:
+      vmImage: 'ubuntu-latest'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            displayName: 'Azure Web App Deploy: '
+            inputs:
+              azureSubscription: 'Pay-As-You-Go (fa8e018e-3a36-4104-ade8-7d8b267fe5b3)'
+              appType: 'webAppLinux'
+              appName: 'kjtech'
+              package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+              runtimeStack: 'NODE|10.10'
+              startUpCommand: 'npm run start'
+              appSettings: '-WEBSITES_PORT 3000'
