@@ -31,19 +31,16 @@ stages:
         npm test
       displayName: 'npm test'
 
-    - task: CopyFiles@2
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
       inputs:
-        sourceFolder: '$(Build.SourcesDirectory)'
-        contents: '*.*' 
-        targetFolder: $(Build.ArtifactStagingDirectory)/npm
-      displayName: 'Copy npm package'
+        rootFolderOrFile: '$(Build.SourcesDirectory)'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        replaceExistingArchive: true
 
-    - task: CopyFiles@2
-      inputs:
-        sourceFolder: '$(Build.SourcesDirectory)'
-        contents: 'package.json' 
-        targetFolder: $(Build.ArtifactStagingDirectory)/npm
-      displayName: 'Copy package.json'   
+    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip  
 
     - task: PublishPipelineArtifact@1
       inputs:
