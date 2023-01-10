@@ -1,10 +1,10 @@
+variables:
+- template: pipeline_templates/variables_${{ parameters.environment }}.yml
+
 parameters:
 - name: environment
   type: string
   default: test
-
-variables:
-- template: pipeline_templates/variables_${{ parameters.environment }}.yml
 
 stages:
 - stage: ${{ parameters.environment }}
