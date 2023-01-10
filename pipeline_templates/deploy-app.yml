@@ -12,6 +12,7 @@ parameters:
 stages:
 - stage: ${{ parameters.environment }}
   displayName: Deploy To ${{ parameters.environment }}
+  jobs:
   - deployment: Deploy
     displayName: Deploy
     environment: ${{ parameters.environment }}
@@ -25,8 +26,8 @@ stages:
             displayName: 'Azure Web App Deploy'
             inputs:
               azureSubscription: 'Pay-As-You-Go (fa8e018e-3a36-4104-ade8-7d8b267fe5b3)'
-              appType: '${{ parameters.appType }}'
-              appName: '${{ parameters.webAppName }}'
-              package: '$(System.ArtifactsDirectory)/drop/.zip'
+              appType: '${{ variables.appType }}'
+              appName: '${{ variables.webAppName }}'
+              package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
               runtimeStack: 'NODE|10.10'
               startUpCommand: 'npm run start'
