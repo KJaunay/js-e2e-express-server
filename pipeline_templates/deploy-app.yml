@@ -21,13 +21,18 @@ steps:
       package: '$(Agent.BuildDirectory)/drop/$(build.buildid).zip'
       runtimeStack: '${{ parameters.runtimeStack }}'
       startUpCommand: 'npm run start'
-  - pwsh: |
-      try {
+  - task: PowerShell@2
+    displayName: Run smoke tests
+    inputs:
+      targetType: 'inline'
+      script: |
+        try {
           $res=Invoke-WebRequest -Uri 'https://${{ parameters.webAppName }}.azurewebsites.net/'
           $res.StatusCode | Should -Be '200'
           $res
-      }
-      catch {
+        }
+        catch {
           Write-Error $_.Exception.Message
           Exit 1
-      }
+        }
+      pwsh: true
